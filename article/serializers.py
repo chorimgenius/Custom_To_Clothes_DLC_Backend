@@ -8,25 +8,24 @@ class CustomStyleViewSerializer(serializers.ModelSerializer):
         model = Style
         fields = '__all__'
 
-
 class CustomViewSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Draft
-        fields = '__all__'
+        fields = '__all__'   
         
-class ArticleSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Article
-        fields = '__all__'       
-        
-
 class ArticlePostSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Article
         fields = ("user", "draft", "style", "image")
-        
 
-
+class ArticleSerializer(serializers.ModelSerializer):
+    likes_count = serializers.SerializerMethodField()
+    
+    def get_likes_count(self, obj):
+        return obj.likes.count()
+    
+    class Meta:
+        model = Article
+        fields = ('id', 'image', 'likes_count',)

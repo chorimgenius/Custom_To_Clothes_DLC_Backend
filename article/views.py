@@ -3,14 +3,16 @@ from rest_framework import status
 from rest_framework.response import Response
 from article.models import Draft
 from article.models import Style
+from article.models import Article
 from article.serializers import CustomViewSerializer
 from article.serializers import CustomStyleViewSerializer
 from article.serializers import ArticlePostSerializer
-from article.models import Article
-import os
+from article.serializers import ArticleSerializer
+from django.core.files import File
+from django.db.models import Count
 from uuid import uuid4
 from PIL import Image
-from django.core.files import File
+import os
 
 
 class CustomView(APIView):
@@ -40,3 +42,10 @@ class CustomView(APIView):
         article.save()
 
         return Response("스타일 제작 완료", status=status.HTTP_200_OK)
+
+class RankArticleView(APIView):
+    def get(self, request):
+        article = Article.objects.annotate(like_count = Count('likes')).order_by('-like_count')
+        print(article)
+        serializer = ArticleSerializer(article, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
