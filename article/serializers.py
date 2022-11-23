@@ -18,7 +18,7 @@ class ArticlePostSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Article
-        fields = ("user", "draft", "style", "image")
+        fields = ("id", "user", "draft", "style", "image")
 
 class ArticleSerializer(serializers.ModelSerializer):
     likes_count = serializers.SerializerMethodField()
@@ -29,3 +29,8 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = ('id', 'image', 'likes_count',)
+
+class ArticlePutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = ("draft",)

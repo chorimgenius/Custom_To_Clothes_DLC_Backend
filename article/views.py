@@ -8,6 +8,7 @@ from article.serializers import CustomViewSerializer
 from article.serializers import CustomStyleViewSerializer
 from article.serializers import ArticlePostSerializer
 from article.serializers import ArticleSerializer
+from article.serializers import ArticlePutSerializer
 from django.core.files import File
 from django.db.models import Count
 from uuid import uuid4
@@ -28,6 +29,7 @@ class CustomView(APIView):
             serializer.save()
 
         article.user = request.user
+        article.draft = Draft.objects.get(id=request.data['draft'])
         article.style_id = serializer.data['id']
         
         image_uuid = uuid4().hex
@@ -41,7 +43,31 @@ class CustomView(APIView):
         article.image = 'result/' + image_uuid + '.png'
         article.save()
 
-        return Response("스타일 제작 완료", status=status.HTTP_200_OK)
+        article_serializer = ArticlePostSerializer(article)
+
+        return Response(article_serializer.data, status=status.HTTP_200_OK)
+    
+    def put(self,request):
+        serializer = CustomStyleViewSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+        
+        image_uuid = uuid4().hex
+        image_draft = Draft.objects.get(id=request.data['draft']).image.name
+        os.system('python style-transfer-pytorch/style_transfer/cli.py media/'+ image_draft +' '+ serializer.data['image'][1:] +' -s 156 -ii 1 -o media/temp/'+ image_uuid +'.png')
+        os.system('rembg i media/temp/'+ image_uuid +'.png media/result/'+ image_uuid +'.png')
+
+        article = Article.objects.get(id=request.data['id'])
+        # draft, image
+        serializer_put = ArticlePutSerializer(article,data=request.data)
+        if serializer_put.is_valid():
+            serializer_put.save(image = 'result/' + image_uuid + '.png', style_id = serializer.data['id'])
+        else:
+            print(serializer_put.errors)
+        
+        article_serializer = ArticlePostSerializer(article)
+        return Response(article_serializer.data)
+        
 
 class RankArticleView(APIView):
     def get(self, request):
