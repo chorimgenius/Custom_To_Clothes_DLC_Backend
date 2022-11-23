@@ -6,14 +6,16 @@ from .models import Article
 from .models import Size
 
 
-# clothes_page
+
+
+
 class OrderView(APIView):
     def get(self, request, article_id):
-        article = Article.objects.get(id=article_id)
-        article_serializer = OrderViewSerializer(article)
-        print(article_serializer)
-        return Response(article_serializer.data, status=status.HTTP_200_OK)
-    
+         article = Article.objects.get(id=article_id)
+         article_serializer = OrderViewSerializer(article)
+         print(article_serializer)
+         return Response(article_serializer.data, status=status.HTTP_200_OK)
+     
     def post(self, request, article_id):
         serializer = OrderSerializer(data=request.data)
         if serializer.is_valid():
