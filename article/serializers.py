@@ -1,15 +1,32 @@
 from rest_framework import serializers
-from article.models import Article
 from article.models import Draft
+from article.models import Style
+from article.models import Article
 
-class ArticleSerializer(serializers.ModelSerializer):
-    
+class CustomStyleViewSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Article
+        model = Style
         fields = '__all__'
-        
+
+
 class CustomViewSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Draft
         fields = '__all__'
+        
+class ArticleSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Article
+        fields = '__all__'       
+        
+
+class ArticlePostSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Article
+        fields = ("user", "draft", "style", "image")
+        
+
+
