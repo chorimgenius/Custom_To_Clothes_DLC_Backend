@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from user.models import User
+from article.models import Article
 
 # 회원가입
 class UserSerializer(serializers.ModelSerializer):
@@ -23,3 +24,13 @@ class CustomObtainPairSerializer(TokenObtainPairSerializer):
         token['username'] = user.username
 
         return token
+    
+class ProfileSerializer(serializers.ModelSerializer):
+    article_user = serializers.SerializerMethodField()
+
+    def get_article_user(self, obj):
+        return obj.user.username
+    
+    class Meta:
+        model = Article
+        fields = ('id', 'article_user', 'image',)
