@@ -1,10 +1,10 @@
 {
     "args": {
-        "content": "media/\u1112\u116e\u1103\u1173\u1110\u1175_\u1102\u116e\u1101\u1175.png",
+        "content": "media/\u1107\u1161\u11ab\u1111\u1161\u11af_\u1102\u116e\u1101\u1175.png",
         "styles": [
-            "media/style/style2_1eexAYp.jpeg"
+            "media/style/style2_6Mq6mBz.jpeg"
         ],
-        "output": "media/temp/9adb4e8977fb4fc1a09bebbef60d82f3.png",
+        "output": "media/temp/868ce533bbf14182944a661340fe1269.png",
         "style_weights": null,
         "devices": [],
         "random_seed": 0,
@@ -34,8 +34,8 @@
             "h": 156,
             "i": 1,
             "i_max": 1,
-            "loss": 5.928462505340576,
-            "time": 1669206588.274851,
+            "loss": 5.9511823654174805,
+            "time": 1669256801.870626,
             "gpu_ram": 0
         }
     ]

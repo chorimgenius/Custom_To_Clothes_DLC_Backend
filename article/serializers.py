@@ -13,9 +13,10 @@ class CustomViewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Draft
         fields = '__all__'   
-        
+
 class ArticlePostSerializer(serializers.ModelSerializer):
-    
+    style = CustomStyleViewSerializer()
+    draft = CustomViewSerializer()
     class Meta:
         model = Article
         fields = ("id", "user", "draft", "style", "image")
@@ -34,3 +35,4 @@ class ArticlePutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = ("draft",)
+
