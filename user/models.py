@@ -43,8 +43,8 @@ class User(AbstractBaseUser):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email']
+    USERNAME_FIELD = 'email' # username_field를 email로 변경
+    REQUIRED_FIELDS = []
 
     def __str__(self):
         return self.username
