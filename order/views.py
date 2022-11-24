@@ -1,7 +1,8 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from order.serializers import OrderSerializer, OrderViewSerializer, CartViewSerializer
+from order.serializers import OrderSerializer, OrderViewSerializer, CartViewSerializer, OrderListViewSerializer
+
 from .models import Article
 from .models import Size
 from .models import Order
@@ -33,5 +34,12 @@ class CartView(APIView):
         print(cart_serializer)
         return Response(cart_serializer.data, status=status.HTTP_200_OK)
 
+#orderlist(size, mount, price, status)
+class OrderListView(APIView):
+    def get(self, request): 
+        order = Order.objects.filter(user=request.user)
+        orderlist_serializer = OrderListViewSerializer(order, many=True)
+        print(orderlist_serializer)
+        return Response(orderlist_serializer.data, status=status.HTTP_200_OK)
 
         
