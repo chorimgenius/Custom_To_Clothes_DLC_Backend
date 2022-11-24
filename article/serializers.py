@@ -13,9 +13,9 @@ class CustomViewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Draft
         fields = '__all__'   
-        
+
 class ArticlePostSerializer(serializers.ModelSerializer):
-    
+    style = CustomStyleViewSerializer()
     class Meta:
         model = Article
         fields = ("id", "user", "draft", "style", "image")
