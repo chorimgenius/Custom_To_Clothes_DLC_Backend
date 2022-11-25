@@ -12,6 +12,7 @@ from article.serializers import ArticlePutSerializer
 from django.db.models import Count
 from uuid import uuid4
 import os
+from django.shortcuts import get_object_or_404
 
 
 class CustomView(APIView):
@@ -88,6 +89,15 @@ class CustomView(APIView):
 class RankArticleView(APIView):
     def get(self, request):
         article = Article.objects.annotate(like_count = Count('likes')).order_by('-like_count')
-        print(article)
         serializer = ArticleSerializer(article, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class LikeView(APIView):
+    def post(self, requset, article_id):
+        article = get_object_or_404(Article, id=article_id)
+        if requset.user in article.likes.all():
+            article.likes.remove(requset.user)
+            return Response("좋아요 취소 완료!", status=status.HTTP_200_OK)
+        else:
+            article.likes.add(requset.user)
+            return Response("좋아요 등록 완료!", status=status.HTTP_200_OK)
