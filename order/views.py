@@ -19,7 +19,7 @@ class OrderView(APIView):
         serializer = OrderSerializer(data=request.data)
         if serializer.is_valid():
             article = Article.objects.get(id=article_id) 
-            size = Size.objects.get(draft_id=article.draft_id, size=request.data["size"]) 
+            size = Size.objects.get(draft_id=article.draft_id, id=request.data["size"]) 
             serializer.save(article_id=article_id, size=size, user=request.user) 
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
