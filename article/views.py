@@ -21,15 +21,23 @@ class CustomView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def post(self, request):
+        print(request.data)
         serializer = CustomStyleViewSerializer(data=request.data)
         if serializer.is_valid():
+            print('????')
             serializer.save()
+            style_id = serializer.data['id']
+            style_image_url = serializer.data['image'][1:]
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            print('고정 스타일')
+            style_id = request.data['style_id']
+            style_image_url = Style.objects.get(id=style_id).image.url[1:]
+            print(f'style_image = {style_image_url}')
+            
 
         image_uuid = uuid4().hex # 머신러닝 결과 파일 이름
         base_image = Draft.objects.get(id=request.data['draft']).image.name # draft image 이름
-        style_image = serializer.data['image'][1:] # style image 이름
+        style_image = style_image_url # style image 이름
 
         os.system('python style-transfer-pytorch/style_transfer/cli.py media/'+ base_image +' '+ style_image +' -s 156 -ii 1 -o media/temp/'+ image_uuid +'.png') # style-transfer-pytorch
         os.system('rembg i media/temp/'+ image_uuid +'.png media/result/'+ image_uuid +'.png') # 누끼
@@ -37,7 +45,7 @@ class CustomView(APIView):
         article = Article()
         article.user = request.user
         article.draft = Draft.objects.get(id=request.data['draft'])
-        article.style_id = serializer.data['id']
+        article.style_id = style_id
         article.image = 'result/' + image_uuid + '.png'
         article.save()
 
@@ -50,12 +58,15 @@ class CustomView(APIView):
         serializer = CustomStyleViewSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            style_id = serializer.data['id']
+            style_image_url = serializer.data['image'][1:]
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            style_id = request.data['style_id']
+            style_image_url = Style.objects.get(id=style_id).image.url[1:]
         
         image_uuid = uuid4().hex # 머신러닝 결과 파일 이름
         base_image = Draft.objects.get(id=request.data['draft']).image.name # draft image 이름
-        style_image = serializer.data['image'][1:] # style image 이름
+        style_image = style_image_url # style image 이름
         
         style_transfer_pytorch = 'python style-transfer-pytorch/style_transfer/cli.py media/'+ base_image +' '+ style_image +' -s 156 -ii 1 -o media/temp/'+ image_uuid +'.png'
         rembg_cli = 'rembg i media/temp/'+ image_uuid +'.png media/result/'+ image_uuid +'.png'
@@ -66,7 +77,7 @@ class CustomView(APIView):
         serializer_put = ArticlePutSerializer(article,data=request.data)
         
         if serializer_put.is_valid():
-            serializer_put.save(image = 'result/' + image_uuid + '.png', style_id = serializer.data['id'])
+            serializer_put.save(image = 'result/' + image_uuid + '.png', style_id = style_id)
         else:
             return Response(serializer_put.errors, status=status.HTTP_400_BAD_REQUEST)
         
