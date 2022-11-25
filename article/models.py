@@ -9,7 +9,7 @@ class Draft(models.Model):
         return self.style
     
 class Style(models.Model):
-    image = models.ImageField(upload_to='style/', null=True, blank=True)
+    image = models.ImageField(upload_to='style/')
 
 class Size(models.Model):
     draft = models.ForeignKey(Draft,on_delete=models.CASCADE, related_name='draft_set')
