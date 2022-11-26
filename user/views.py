@@ -21,6 +21,8 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     
 class ProfileView(APIView):
     def get(self, request):
-        serializer = ProfileSerializer(Article.objects.get(user=request.user))
+        article = Article.objects.filter(user=request.user)
+        print(article)
+        serializer = ProfileSerializer(article, many=True)
         print(serializer)
         return Response(serializer.data, status=status.HTTP_200_OK)
