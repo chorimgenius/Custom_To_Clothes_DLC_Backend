@@ -19,7 +19,7 @@ class CustomView(APIView):
     def get(self,request):
         serializer_list = []
         draft = Draft.objects.all()
-        style_sample = Style.objects.filter(id__lte = 10)
+        style_sample = Style.objects.filter(id__lte = 5)
         
         serializer = CustomViewSerializer(draft, many=True)
         style_serializer = CustomStyleViewSerializer(style_sample,many=True)
@@ -37,14 +37,13 @@ class CustomView(APIView):
         else:
             style_id = request.data['style_id']
             style_image_url = Style.objects.get(id=style_id).image.url[1:]
-            print(f'style_image = {style_image_url}')
             
 
         image_uuid = uuid4().hex # 머신러닝 결과 파일 이름
         base_image = Draft.objects.get(id=request.data['draft']).image.name # draft image 이름
         style_image = style_image_url # style image 이름
 
-        os.system('python style-transfer-pytorch/style_transfer/cli.py media/'+ base_image +' '+ style_image +' -s 156 -ii 10 -o media/temp/'+ image_uuid +'.png') # style-transfer-pytorch
+        os.system('python style-transfer-pytorch/style_transfer/cli.py media/'+ base_image +' '+ style_image +' -s 156 -ii 30 -o media/temp/'+ image_uuid +'.png') # style-transfer-pytorch
         os.system('rembg i media/temp/'+ image_uuid +'.png media/result/'+ image_uuid +'.png') # 누끼
 
         article = Article()

@@ -10,13 +10,17 @@ class Draft(models.Model):
     
 class Style(models.Model):
     image = models.ImageField(upload_to='style/')
+    
+    def __str__(self):
+        return self.image
 
 class Size(models.Model):
     draft = models.ForeignKey(Draft,on_delete=models.CASCADE, related_name='draft_set')
     size = models.CharField(max_length=50)
-    stock = models.IntegerField(default=999)
     price = models.IntegerField()
-    color = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return (f"{self.draft}, {self.size}")
 
 class Article(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
