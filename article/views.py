@@ -16,20 +16,24 @@ import os
 
 class CustomView(APIView):
     def get(self,request):
+        serializer_list = []
         draft = Draft.objects.all()
+        style_sample = Style.objects.filter(id__lte = 10)
+        
         serializer = CustomViewSerializer(draft, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        style_serializer = CustomStyleViewSerializer(style_sample,many=True)
+
+        serializer_list.append(serializer.data)
+        serializer_list.append(style_serializer.data)
+        return Response(serializer_list, status=status.HTTP_200_OK)
     
     def post(self, request):
-        print(request.data)
         serializer = CustomStyleViewSerializer(data=request.data)
         if serializer.is_valid():
-            print('????')
             serializer.save()
             style_id = serializer.data['id']
             style_image_url = serializer.data['image'][1:]
         else:
-            print('고정 스타일')
             style_id = request.data['style_id']
             style_image_url = Style.objects.get(id=style_id).image.url[1:]
             print(f'style_image = {style_image_url}')
@@ -39,7 +43,7 @@ class CustomView(APIView):
         base_image = Draft.objects.get(id=request.data['draft']).image.name # draft image 이름
         style_image = style_image_url # style image 이름
 
-        os.system('python style-transfer-pytorch/style_transfer/cli.py media/'+ base_image +' '+ style_image +' -s 156 -ii 1 -o media/temp/'+ image_uuid +'.png') # style-transfer-pytorch
+        os.system('python style-transfer-pytorch/style_transfer/cli.py media/'+ base_image +' '+ style_image +' -s 156 -ii 10 -o media/temp/'+ image_uuid +'.png') # style-transfer-pytorch
         os.system('rembg i media/temp/'+ image_uuid +'.png media/result/'+ image_uuid +'.png') # 누끼
 
         article = Article()
@@ -68,7 +72,7 @@ class CustomView(APIView):
         base_image = Draft.objects.get(id=request.data['draft']).image.name # draft image 이름
         style_image = style_image_url # style image 이름
         
-        style_transfer_pytorch = 'python style-transfer-pytorch/style_transfer/cli.py media/'+ base_image +' '+ style_image +' -s 156 -ii 1 -o media/temp/'+ image_uuid +'.png'
+        style_transfer_pytorch = 'python style-transfer-pytorch/style_transfer/cli.py media/'+ base_image +' '+ style_image +' -s 156 -ii 10 -o media/temp/'+ image_uuid +'.png'
         rembg_cli = 'rembg i media/temp/'+ image_uuid +'.png media/result/'+ image_uuid +'.png'
         os.system(style_transfer_pytorch)
         os.system(rembg_cli)
