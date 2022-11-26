@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from order.serializers import OrderSerializer, OrderViewSerializer, CartViewSerializer, OrderListViewSerializer
+from order.serializers import OrderSerializer, OrderViewSerializer, CartViewSerializer, OrderListViewSerializer, OrderCreateSerializer
 
 from .models import Article
 from .models import Size
@@ -25,20 +25,33 @@ class OrderView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 #cart (image, size, mount, price)   
 class CartView(APIView):
     def get(self, request): 
-        order = Order.objects.filter(user=request.user)
-        
-        print(order)
+        order = Order.objects.filter(user=request.user, status=0)
         cart_serializer = CartViewSerializer(order, many=True)
         print(cart_serializer)
         return Response(cart_serializer.data, status=status.HTTP_200_OK)
+    
+    
+    def put(self, request):
+        order = Order.objects.filter(user=request.user, status=0)
+        print(len(order))
+        for i in range(len(order)):
+            serializer = OrderCreateSerializer(order[i], data={'status':1})
+            if serializer.is_valid():
+                serializer.save()
+            else: 
+                return Response("수정실패!!!", status=status.HTTP_400_BAD_REQUEST)
+        return Response("수정완료",status=status.HTTP_200_OK)
+
+           
 
 #orderlist(size, mount, price, status)
 class OrderListView(APIView):
     def get(self, request): 
-        order = Order.objects.filter(user=request.user)
+        order = Order.objects.filter(user=request.user, status=1)
         orderlist_serializer = OrderListViewSerializer(order, many=True)
         print(orderlist_serializer)
         return Response(orderlist_serializer.data, status=status.HTTP_200_OK)

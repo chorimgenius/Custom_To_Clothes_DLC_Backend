@@ -60,3 +60,10 @@ class OrderListViewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ('article_user','id','mount','size','status','article','user','price',)
+
+
+class OrderCreateSerializer(serializers.ModelSerializer):
+      
+    class Meta:
+        model = Order
+        fields = ('status','id',)
