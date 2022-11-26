@@ -26,11 +26,7 @@ class CustomObtainPairSerializer(TokenObtainPairSerializer):
         return token
     
 class ProfileSerializer(serializers.ModelSerializer):
-    article_user = serializers.SerializerMethodField()
-
-    def get_article_user(self, obj):
-        return obj.user.username
     
     class Meta:
         model = Article
-        fields = ('id', 'article_user', 'image',)
+        fields = ('id', 'image', 'user',)
