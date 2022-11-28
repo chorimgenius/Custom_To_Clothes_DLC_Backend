@@ -1,7 +1,7 @@
 # Custom_TO_CLothes_DLC
 [스파르타코딩클럽 내일배움캠프 AI 3기] A4팀 딥러닝 프로젝트
 ## 프로젝트 소개
-본적으로 입고 다니는 옷들을 내가 좋아하는 필터를 이용해서 커스텀 된 옷을 주문하는 쇼핑몰을 기획하였습니다.  
+기본적으로 입고 다니는 옷들을 내가 좋아하는 필터를 이용해서 커스텀 된 옷을 주문하는 쇼핑몰을 기획하였습니다.  
 내가 커스텀한 옷들을 볼 수 있고, 커스텀 된 다른 사용자의 옷들을 인기 순위별로 볼 수 있습니다.
 
 ## 개발기간
@@ -87,4 +87,6 @@ https://www.figma.com/file/2wXsZhQlOURcWATyJzz2he/Untitled?node-id=0%3A1&t=1Sm22
 [style-transfer-pytorch](https://github.com/crowsonkb/style-transfer-pytorch)
 
 ## 프로젝트 시연영상
+![image](https://user-images.githubusercontent.com/113073174/204188971-949176c9-1b0e-471b-90e2-c257f54d5ac9.png)
+!프로젝트 시연영상](https://www.youtube.com/watch?v=dH_CHanu6E4)
 
