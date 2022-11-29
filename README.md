@@ -89,6 +89,7 @@ https://www.figma.com/file/2wXsZhQlOURcWATyJzz2he/Untitled?node-id=0%3A1&t=1Sm22
 [style-transfer-pytorch](https://github.com/crowsonkb/style-transfer-pytorch)
 
 ## 프로젝트 시연영상
-![image](https://user-images.githubusercontent.com/113073174/204188971-949176c9-1b0e-471b-90e2-c257f54d5ac9.png)
-!프로젝트 시연영상](https://www.youtube.com/watch?v=dH_CHanu6E4)
+[![A4팀 프로젝트 시연영상](https://user-images.githubusercontent.com/113073174/204188971-949176c9-1b0e-471b-90e2-c257f54d5ac9.png)](https://www.youtube.com/watch?v=dH_CHanu6E4)
 
+## 💣 트러블 슈팅
+[Wiki 이동](https://github.com/marinred/Custom_To_Clothes_DLC_Backend.wiki.git)
